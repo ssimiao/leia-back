@@ -19,7 +19,7 @@
 ###
 FROM quay.io/quarkus/quarkus-micro-image:2.0
 
-RUN ./mvnw package -Dnative
+RUN mvnw package -Dnative
 
 WORKDIR /work/
 RUN chown 1001 /work \
