@@ -1,5 +1,4 @@
 FROM quay.io/quarkus/centos-quarkus-maven:19.2.1 AS build
-COPY ./pom.xml ./pom.xml
 RUN mvn -Pnative package -DskipTests
 
 FROM registry.access.redhat.com/ubi8/ubi-minimal
