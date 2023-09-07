@@ -6,6 +6,9 @@ RUN mvn package -Dnative
 
 ## Stage 2 : create the docker final image
 FROM quay.io/quarkus/quarkus-micro-image:2.0
+
+RUN apk add --no-cache gcompat libstdc++
+
 WORKDIR /work/
 COPY --from=build /target/*-runner /work/application
 
