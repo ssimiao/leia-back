@@ -6,7 +6,7 @@ USER quarkus
 WORKDIR /code
 RUN ./mvnw -B org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline
 RUN ls
-COPY src /code/src
+COPY leia/src /code/src
 RUN ./mvnw package -Dnative
 
 ## Stage 2 : create the docker final image
