@@ -1,5 +1,4 @@
 FROM quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-17 AS build
-RUN mvnw -B org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline
 RUN mvnw package -Dnative
 
 ## Stage 2 : create the docker final image
