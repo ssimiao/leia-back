@@ -1,5 +1,5 @@
 ## Stage 1 : build with maven builder image with native capabilities
-FROM observabilitystack/graalvm-maven-builder AS build
+FROM observabilitystack/graalvm-maven-builder:ol9-java17-22.3.2 AS build
 COPY ./pom.xml ./pom.xml
 COPY ./src ./src
 RUN mvn package -Dnative
