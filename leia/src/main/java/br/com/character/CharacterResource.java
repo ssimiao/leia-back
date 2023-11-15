@@ -1,9 +1,7 @@
 package br.com.character;
 
 import br.com.character.classe.ClasseEntity;
-import br.com.character.race.RaceEntity;
 import br.com.user.UserEntity;
-import br.com.user.UserRequest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
@@ -19,12 +17,9 @@ public class CharacterResource {
     private CharacterRepository characterRepository;
 
     @POST
-    public Response saveCharacter(@RestPath Long userId, CharacterRequest request) {
+    public Response saveCharacter(@RestPath Long userId, CharacterData request) {
         ClasseEntity classe = new ClasseEntity(1L);
-        RaceEntity race = new RaceEntity(request.getRaceId());
         UserEntity user = new UserEntity(userId);
-        CharacterEntity character = new CharacterEntity(classe, race, user, request.getName());
-        save(character);
 
         return Response.ok().build();
     }

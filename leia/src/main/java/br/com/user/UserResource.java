@@ -1,10 +1,13 @@
 package br.com.user;
 
+import br.com.security.Token;
+import br.com.security.TokenClient;
+import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @Path("/v1/users")
 public class UserResource {
@@ -12,11 +15,17 @@ public class UserResource {
     @Inject
     private UserRepository userRepository;
 
-    @POST
-    @Transactional
-    public Response saveUser(UserRequest userRequest) {
-        userRepository.persist(new UserEntity(userRequest.getUsername(), userRequest.getPassword()));
+    @RestClient
+    private AccountRestClient accountRestClient;
 
-        return Response.ok(userRequest).build();
+    @RestClient
+    private TokenClient tokenClient;
+
+    @POST
+    public Response saveUser(Request<UserCharacterData> userRequest) {
+        Token token = tokenClient.generateToken();
+        Log.info(token.getAccessToken());
+        Response response = accountRestClient.saveUserAndChar(userRequest, "Bearer " + token.getAccessToken());
+        return Response.status(response.getStatus()).build();
     }
 }
