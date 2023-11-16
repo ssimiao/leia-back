@@ -27,6 +27,17 @@ public class UserData {
     @JsonProperty("email")
     private String email;
 
+    @JsonProperty("user_type")
+    private String userType;
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
     public String getUsername() {
         return username;
     }

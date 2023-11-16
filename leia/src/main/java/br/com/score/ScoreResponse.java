@@ -36,6 +36,9 @@ public class ScoreResponse {
         if (indice > 14) {
             indice = 14;
             this.indiceLeiturabilidadeAutomatizado = 14;
+        } else if (indice < 1) {
+            indice = 1;
+            this.indiceLeiturabilidadeAutomatizado = 1;
         }
 
         String[] idades  = rangeAgeARI.get(indice).split(",");
@@ -44,7 +47,7 @@ public class ScoreResponse {
     }
 
     private void populateRangeARI() {
-        rangeAgeARI.put(1, "5-6");
+        rangeAgeARI.put(1, "5,6");
         rangeAgeARI.put(2, "6,7");
         rangeAgeARI.put(3, "7,8");
         rangeAgeARI.put(4, "8,9");
@@ -108,8 +111,16 @@ public class ScoreResponse {
     public void validaIndiceARI() {
         double diferencaResultados = 7 - indiceLeiturabilidadeAutomatizado;
         if (Math.signum(diferencaResultados) == -1.0) {
-            diferencaResultados = Math.abs(diferencaResultados);
+            diferencaResultados = Math.abs(diferencaResultados) * 5;
             this.score = this.score - diferencaResultados;
+        }
+    }
+
+    public void validaIndiceGulpease() {
+        if (indiceGulpease > 60 && indiceGulpease < 80) {
+            this.score = this.score - 25;
+        } else if (indiceGulpease < 40) {
+            this.score -= 50;
         }
     }
 }

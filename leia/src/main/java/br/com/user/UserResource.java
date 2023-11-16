@@ -1,5 +1,6 @@
 package br.com.user;
 
+import br.com.character.CharacterData;
 import br.com.security.Token;
 import br.com.security.TokenClient;
 import io.quarkus.logging.Log;
@@ -23,6 +24,13 @@ public class UserResource {
 
     @POST
     public Response saveUser(Request<UserCharacterData> userRequest) {
+        UserCharacterData userCharacterData = userRequest.getRequest();
+        CharacterData character = userCharacterData.getCharacter();
+        if ("professor".equalsIgnoreCase(userCharacterData.getAccount().getUserType()))
+            character.setClasseId("professor");
+        else
+            character.setClasseId("novato");
+
         Token token = tokenClient.generateToken();
         Log.info(token.getAccessToken());
         Response response = accountRestClient.saveUserAndChar(userRequest, "Bearer " + token.getAccessToken());

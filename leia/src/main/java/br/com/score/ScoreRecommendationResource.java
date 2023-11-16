@@ -2,6 +2,7 @@ package br.com.score;
 
 import br.com.score.google.GoogleBookData;
 import br.com.score.google.GoogleBooksClient;
+import br.com.shared.ResourceNotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
@@ -9,6 +10,7 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Path("/v1/score")
 public class ScoreRecommendationResource {
@@ -27,6 +29,9 @@ public class ScoreRecommendationResource {
         double indiceDeLeiturabilidadeAutomatizado = indiceDeLeiturabilidadeAutomatizado(numeroLetras, numeroPalavras, numeroSentencas);
         double indiceColeman = indiceColeman(numeroLetras, numeroPalavras, numeroSentencas);
         double indiceGulpease = indiceGulpease(numeroLetras, numeroPalavras, numeroSentencas);
+
+        if (Objects.isNull(googleBookData.items))
+            throw new ResourceNotFoundException("Livro não encontrado");
 
         BigDecimal averageRating = googleBookData.items.stream()
                 .findFirst().orElseThrow()
