@@ -22,7 +22,7 @@ public class UserData {
     private String name;
 
     @JsonProperty("genre")
-    private String genre;
+    private String gender;
 
     @JsonProperty("email")
     private String email;
@@ -70,12 +70,12 @@ public class UserData {
         this.name = name;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getGender() {
+        return gender;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getEmail() {
@@ -84,5 +84,9 @@ public class UserData {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public UserEntity toDomain() {
+        return new UserEntity(username, password, birthDate, name, gender, email, userType);
     }
 }

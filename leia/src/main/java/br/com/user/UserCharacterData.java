@@ -1,8 +1,10 @@
 package br.com.user;
 
 import br.com.character.CharacterData;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCharacterData {
 
     @JsonProperty("character")

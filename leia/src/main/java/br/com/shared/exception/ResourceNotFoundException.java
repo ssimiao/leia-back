@@ -1,4 +1,4 @@
-package br.com.shared;
+package br.com.shared.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

@@ -1,8 +1,8 @@
 package br.com.score;
 
-import br.com.score.google.GoogleBookData;
-import br.com.score.google.GoogleBooksClient;
-import br.com.shared.ResourceNotFoundException;
+import br.com.shared.google.GoogleBookData;
+import br.com.shared.google.GoogleBooksClient;
+import br.com.shared.exception.ResourceNotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;

@@ -3,10 +3,12 @@ package br.com.character.race;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.persistence.*;
 
 @Entity
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@RegisterForReflection
 public class RaceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package br.com.score.google;
+package br.com.shared.google;
 
 import java.util.List;
 

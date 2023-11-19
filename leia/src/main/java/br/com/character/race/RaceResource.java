@@ -8,6 +8,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 @Path("/v1/races")
 public class RaceResource {
 
@@ -16,8 +18,9 @@ public class RaceResource {
 
     @POST
     @Transactional
-    public Response saveRace(RaceRequest request) {
-        raceRepository.persist(new RaceEntity(request.getName(), request.getColor()));
+    public Response saveRace(List<RaceRequest> request) {
+        List<RaceEntity> races = request.stream().map(i -> new RaceEntity(i.getName(), i.getColor())).toList();
+        raceRepository.persist(races);
         return Response.ok().build();
     }
 

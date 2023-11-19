@@ -8,6 +8,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 @Path("/v1/classes")
 public class ClasseResource {
 
@@ -16,8 +18,9 @@ public class ClasseResource {
 
     @POST
     @Transactional
-    public Response saveClasse(JsonValueName<String> request) {
-        classeRepository.persist(new ClasseEntity(request.getName()));
+    public Response saveClasse(List<JsonValueName<String>> request) {
+        List<ClasseEntity> classes = request.stream().map(i -> new ClasseEntity(i.getName())).toList();
+        classeRepository.persist(classes);
         return Response.ok().build();
     }
 
