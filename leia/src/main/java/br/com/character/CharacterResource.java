@@ -33,6 +33,24 @@ public class CharacterResource {
         if (characterEntity == null)
             throw new ResourceNotFoundException("Personagem não encontrado");
 
+        if (request.getPath() != null) {
+            isUpdatable(characterEntity, request.getValue());
+            switch (request.getPath()) {
+                case "dex_attribute" ->
+                        characterEntity.setDexAttribute(characterEntity.getDexAttribute() + request.getValue());
+                case "force_attribute" ->
+                        characterEntity.setForceAttribute(characterEntity.getForceAttribute() + request.getValue());
+                case "agility_attribute" -> characterEntity.setAgilityAttribute(characterEntity.getAgilityAttribute() + request.getValue());
+                case "resistence_attribute" -> characterEntity.setResistenceAttribute(characterEntity.getResistenceAttribute() + request.getValue());
+                case "charisma_attribute" -> characterEntity.setCharismaAttribute(characterEntity.getCharismaAttribute() + request.getValue());
+                case "intelligence_attribute" -> characterEntity.setIntelligenceAttribute(characterEntity.getIntelligenceAttribute() + request.getValue());
+                default -> throw new IllegalStateException("Unexpected value: " + request.getPath());
+            }
+            characterEntity.setEnableAttributePoints(characterEntity.getEnableAttributePoints() - request.getValue());
+            characterRepository.persist(characterEntity);
+            return Response.ok().build();
+        }
+
         int agilityDifference = abs(request.getAgilityAttribute() - characterEntity.getAgilityAttribute());
         int resistenceDifference = abs(request.getResistenceAttribute() - characterEntity.getResistenceAttribute());
         int forceDifference = abs(request.getForceAttribute() - characterEntity.getForceAttribute());
@@ -42,8 +60,7 @@ public class CharacterResource {
 
         int difference = agilityDifference + resistenceDifference + forceDifference + dexDifference + intelligenceDifference + charismaDifference;
 
-        if (difference > characterEntity.getEnableAttributePoints())
-            throw new CharacterException("Erro ao atualizar atributos do personagem");
+        isUpdatable(characterEntity, difference);
 
         characterEntity.setAgilityAttribute(request.getAgilityAttribute())
                 .setIntelligenceAttribute(request.getIntelligenceAttribute())
@@ -55,5 +72,10 @@ public class CharacterResource {
 
         characterRepository.persist(characterEntity);
         return Response.ok().build();
+    }
+
+    private static void isUpdatable(CharacterEntity characterEntity, int difference) {
+        if (difference > characterEntity.getEnableAttributePoints())
+            throw new CharacterException("Erro ao atualizar atributos do personagem");
     }
 }

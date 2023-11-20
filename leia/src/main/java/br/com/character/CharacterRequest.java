@@ -26,6 +26,29 @@ public class CharacterRequest {
     @JsonProperty("intelligence_attribute")
     private Integer intelligenceAttribute;
 
+
+    @JsonProperty("path")
+    private String path;
+
+    @JsonProperty("value")
+    private Integer value;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
     public String getName() {
         return name;
     }
