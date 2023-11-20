@@ -54,12 +54,12 @@ public class UserResource {
             return Response.status(response.getStatus()).build();
         } else {
             if ("professor".equalsIgnoreCase(userCharacterData.getAccount().getUserType())){
-                character.setClasseId("professor");
+                character.setClasseId("Professor");
                 character.setRaceId("owl");
                 character.setColor("brown");
             }
             else
-                character.setClasseId("novato");
+                character.setClasseId("Novato");
 
             UserEntity domain = userCharacterData.getAccount().toDomain();
             userRepository.persist(domain);

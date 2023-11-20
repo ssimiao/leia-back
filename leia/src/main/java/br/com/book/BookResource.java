@@ -9,8 +9,10 @@ import br.com.user.UserEntity;
 import br.com.user.UserRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -70,5 +72,10 @@ public class BookResource {
 
         bookRepository.persist(bookEntity);
         return bookEntity;
+    }
+
+    @GET
+    public Response getBook(@QueryParam("isbn") String isbn) {
+        return Response.ok(bookRepository.findByIsbn(isbn)).build();
     }
 }
