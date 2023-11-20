@@ -30,7 +30,7 @@ public class LoginResource {
             UserEntity userEntity = userRepository.find("username", user.getUsername()).firstResult();
 
             if (userEntity != null && user.getPassword().equalsIgnoreCase(userEntity.getPassword())) {
-                return Response.ok().build();
+                return Response.ok(Map.of("id", userEntity.getId())).build();
             }
 
             return Response.status(403).build();
