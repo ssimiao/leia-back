@@ -22,6 +22,9 @@ public class CharacterResource {
     @GET
     public Response getCharacter(@RestPath Long userId) {
         CharacterEntity characterEntity = characterRepository.find("user", new UserEntity(userId)).firstResult();
+        UserEntity user = characterEntity.getUser();
+        user.setUsername("******");
+        user.setPassword("******");
         return Response.ok(characterEntity).build();
     }
 

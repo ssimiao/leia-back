@@ -33,8 +33,6 @@ public class BookReadEntity {
     private UserEntity user;
 
     public UserEntity getUser() {
-        user.setUsername("******");
-        user.setPassword("******");
         return user;
     }
 

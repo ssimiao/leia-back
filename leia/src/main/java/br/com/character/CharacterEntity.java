@@ -128,8 +128,6 @@ public class CharacterEntity {
     }
 
     public UserEntity getUser() {
-        user.setPassword("******");
-        user.setUsername("******");
         return user;
     }
 

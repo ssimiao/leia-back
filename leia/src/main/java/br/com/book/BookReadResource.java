@@ -87,6 +87,11 @@ public class BookReadResource {
 
     @GET
     public Response getBookToRead(@RestPath Long userId) {
-        return Response.ok(bookReadRepository.findByUserId(userId)).build();
+        List<BookReadEntity> reads = bookReadRepository.findByUserId(userId).stream().peek(read -> {
+            UserEntity user = read.getUser();
+            user.setPassword("******");
+            user.setUsername("******");
+        }).toList();
+        return Response.ok(reads).build();
     }
 }
