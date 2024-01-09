@@ -45,7 +45,7 @@ public class ChallengeSolutionResource {
                 .setXp(round(character.getXp() + bookPages * 0.2f))
                 .setEnableAttributePoints(round(character.getEnableAttributePoints() + bookPages * 0.1f));
 
-        if (character.getXpToLevelUp().equals(character.getXp())) {
+        if (character.getXpToLevelUp() < character.getXp()) {
             character.setLevel(character.getLevel() + 1);
         }
 
