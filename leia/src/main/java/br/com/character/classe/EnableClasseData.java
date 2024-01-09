@@ -1,6 +1,5 @@
 package br.com.character.classe;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -10,7 +9,7 @@ import java.util.List;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @RegisterForReflection
-public class EnableClasseResponse {
+public class EnableClasseData {
 
     private List<String> attributesCheck;
 
@@ -21,7 +20,7 @@ public class EnableClasseResponse {
     private String classe;
 
 
-    public EnableClasseResponse(String classe) {
+    public EnableClasseData(String classe) {
         this.attributesCheck = new ArrayList<>();
         this.attributesNoCheck = new ArrayList<>();
         this.classe = classe;

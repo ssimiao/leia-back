@@ -3,10 +3,12 @@ package br.com.character;
 import br.com.character.classe.ClasseAttributeValidateEnum;
 import br.com.character.classe.ClasseEntity;
 import br.com.character.classe.ClasseRepository;
-import br.com.character.classe.EnableClasseResponse;
-import br.com.user.UserEntity;
+import br.com.character.classe.EnableClasseData;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestPath;
@@ -36,7 +38,7 @@ public class CharacterClasseResource {
                         !"Novato".equalsIgnoreCase(classe.getName()))
                 .map(classe -> {
                     ClasseAttributeValidateEnum classeAttributes = ClasseAttributeValidateEnum.valueOf(classe.getName().toUpperCase());
-                    EnableClasseResponse enableClasseResponse = new EnableClasseResponse(classeAttributes.getNameClasse());
+                    EnableClasseData enableClasseResponse = new EnableClasseData(classeAttributes.getNameClasse());
                     List<String> attributesCheck = enableClasseResponse.getAttributesCheck();
                     List<String> attributesNoCheck = enableClasseResponse.getAttributesNoCheck();
 
@@ -47,6 +49,26 @@ public class CharacterClasseResource {
 
         return Response.ok(validationFinished).build();
     }
+
+    @PATCH
+    @Transactional
+    public Response saveClasseCharacter(@RestPath Long userId, EnableClasseData enableClasseResponse) {
+        CharacterEntity character = characterRepository.findByUserId(userId);
+
+        ClasseAttributeValidateEnum validateEnum = ClasseAttributeValidateEnum.valueOf(enableClasseResponse.getClasse().toUpperCase());
+
+        addValidationClasses(character, validateEnum, enableClasseResponse.getAttributesCheck(), enableClasseResponse.getAttributesNoCheck());
+
+        if (enableClasseResponse.isBlocked())
+            return Response.serverError().build();
+
+        ClasseEntity classe = classeRepository.findByNameIgnoreCase(enableClasseResponse.getClasse());
+        character.setClasse(classe);
+        characterRepository.persist(character);
+
+        return Response.ok(character).build();
+    }
+
 
     private static void addValidationClasses(CharacterEntity character, ClasseAttributeValidateEnum classeAttributes, List<String> attributesCheck, List<String> attributesNoCheck) {
         if (character.getDexAttribute() > classeAttributes.getDexAttribute()) {

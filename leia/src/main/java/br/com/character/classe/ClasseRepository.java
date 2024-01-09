@@ -10,4 +10,8 @@ public class ClasseRepository implements PanacheRepositoryBase<ClasseEntity, Lon
     public ClasseEntity findByName(String name){
         return find("name", name).firstResult();
     }
+
+    public ClasseEntity findByNameIgnoreCase(String name){
+        return find("lower(name)", name.toLowerCase()).firstResult();
+    }
 }
