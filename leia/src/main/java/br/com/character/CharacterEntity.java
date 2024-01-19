@@ -155,7 +155,7 @@ public class CharacterEntity {
     }
 
     public Integer getXpToLevelUp() {
-        return (level + 1) * 100;
+        return (level + 1) * 100 + (level * 100);
     }
 
     public Integer getForceAttribute() {

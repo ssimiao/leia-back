@@ -15,7 +15,7 @@ public class UserData {
     @NotBlank
     private String password;
 
-    @JsonProperty("birthdate")
+    @JsonProperty("birth_date")
     private String birthDate;
 
     @JsonProperty("name")
