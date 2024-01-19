@@ -64,6 +64,7 @@ public class CharacterClasseResource {
 
         ClasseEntity classe = classeRepository.findByNameIgnoreCase(enableClasseResponse.getClasse());
         character.setClasse(classe);
+        character.setCoins(character.getCoins() - 50);
         characterRepository.persist(character);
 
         return Response.ok(character).build();
