@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@Path("/v1/user/{userId}/groups")
+@Path("/v1/users/{userId}/groups")
 
 public class GroupStudentResource {
 
@@ -56,7 +56,7 @@ public class GroupStudentResource {
 
     @GET
     public Response getGroup(@RestPath Long userId) {
-        GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner", userId).firstResult();
+        var groupStudentEntity = groupStudentRepository.find("owner", userId).stream().toList();
         return Response.ok(groupStudentEntity).build();
     }
 }
