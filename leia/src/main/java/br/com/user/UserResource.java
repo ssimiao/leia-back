@@ -12,9 +12,7 @@ import br.com.security.TokenClient;
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -83,5 +81,31 @@ public class UserResource {
             characterRepository.persist(characterEntity);
             return Response.status(200).build();
         }
+    }
+
+    @PUT
+    @Transactional
+    public Response updateUserInfo(UserData userRequest) {
+        UserEntity userEntity = userRepository.findById(userRequest.getId());
+        userEntity.setUsername(userRequest.getUsername());
+        userEntity.setName(userRequest.getName());
+        userEntity.setEmail(userEntity.getEmail());
+        userEntity.setBirthDate(userEntity.getBirthDate());
+        userRepository.persist(userEntity);
+        return Response.ok(userEntity).build();
+    }
+
+    @PATCH
+    @Transactional
+    public Response updatePassInfo(PassData passDataRequest) {
+        UserEntity userEntity = userRepository.findById(passDataRequest.getId());
+
+        if (userEntity.getPassword().equals(passDataRequest.getOldPass())) {
+            userEntity.setPassword(passDataRequest.getNewPass());
+            userRepository.persist(userEntity);
+            return Response.ok(userEntity).build();
+        }
+
+        return Response.serverError().build();
     }
 }
