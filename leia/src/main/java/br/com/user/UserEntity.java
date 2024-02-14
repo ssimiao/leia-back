@@ -37,6 +37,9 @@ public class UserEntity {
     @Column
     private String userType;
 
+    @Column
+    private Integer avatarId;
+
     public UserEntity(Long id) {
         this.id = id;
     }
@@ -52,6 +55,14 @@ public class UserEntity {
     }
 
     public UserEntity() {
+    }
+
+    public Integer getAvatarId() {
+        return avatarId == null ? 1 : avatarId;
+    }
+
+    public void setAvatarId(Integer avatarId) {
+        this.avatarId = avatarId;
     }
 
     public Long getId() {

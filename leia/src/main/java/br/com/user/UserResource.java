@@ -51,7 +51,7 @@ public class UserResource {
             Response response = accountRestClient.saveUserAndChar(List.of(userRequest.getRequest()), "Bearer " + token.getAccessToken());
             return Response.status(response.getStatus()).build();
         } else {
-            if ("professor".equalsIgnoreCase(userCharacterData.getAccount().getUserType())){
+            if ("professor".equalsIgnoreCase(userCharacterData.getAccount().getUserType())) {
                 character.setClasseId("Professor");
                 character.setRaceId("owl");
                 character.setColor("brown");
@@ -87,11 +87,16 @@ public class UserResource {
     @Transactional
     public Response updateUserInfo(UserData userRequest) {
         UserEntity userEntity = userRepository.findById(userRequest.getId());
-        userEntity.setUsername(userRequest.getUsername());
+
+        if(!userRequest.getUsername().contains("*"))
+            userEntity.setUsername(userRequest.getUsername());
+
+        userEntity.setAvatarId(userRequest.getAvatarId());
         userEntity.setName(userRequest.getName());
         userEntity.setEmail(userEntity.getEmail());
         userEntity.setBirthDate(userEntity.getBirthDate());
         userRepository.persist(userEntity);
+
         return Response.ok(userEntity).build();
     }
 

@@ -34,6 +34,17 @@ public class UserData {
     @JsonProperty("user_type")
     private String userType;
 
+    @JsonProperty("avatar_id")
+    private Integer avatarId;
+
+    public Integer getAvatarId() {
+        return avatarId;
+    }
+
+    public void setAvatarId(Integer avatarId) {
+        this.avatarId = avatarId;
+    }
+
     public String getUserType() {
         return userType;
     }
