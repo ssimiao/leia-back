@@ -37,7 +37,7 @@ public class GroupStudentResource {
         Map<String, Object> params = new HashMap<>();
         params.put("name", request.getName());
         params.put("owner", userId);
-        GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner = :owner or name = :name", params).firstResult();
+        GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner = :owner or groupName = :name", params).firstResult();
         List<CharacterEntity> student = groupStudentEntity.getStudent();
         List<CharacterEntity> characters = request.getCharacters().stream().map(id -> {
             CharacterEntity characterEntity = new CharacterEntity();
