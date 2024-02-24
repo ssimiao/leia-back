@@ -51,7 +51,7 @@ public class GroupStudentResource {
         }
 
         groupStudentRepository.persist(groupStudentEntity);
-        return Response.ok(groupStudentEntity).build();
+        return Response.ok().build();
     }
 
     @GET
