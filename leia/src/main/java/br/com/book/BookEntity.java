@@ -45,6 +45,18 @@ public class BookEntity {
     @Column
     private String category;
 
+    @Column
+    private Boolean groupOnly;
+
+    public Boolean getGroupOnly() {
+        return groupOnly;
+    }
+
+    public BookEntity setGroupOnly(Boolean groupOnly) {
+        this.groupOnly = groupOnly;
+        return this;
+    }
+
     public String getCategory() {
         return category;
     }

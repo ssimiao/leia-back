@@ -1,5 +1,6 @@
 package br.com.teacher;
 
+import br.com.book.BookEntity;
 import br.com.character.CharacterEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -27,13 +28,26 @@ public class GroupStudentEntity {
     @JoinColumn(name = "student_id")
     private List<CharacterEntity> student;
 
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "book_id")
+    private List<BookEntity> booksRecommended;
+
     public GroupStudentEntity() {
     }
 
-    public GroupStudentEntity(Long owner, String groupName, List<CharacterEntity> student) {
+    public GroupStudentEntity(Long owner, String groupName, List<CharacterEntity> student, List<BookEntity> booksRecommended) {
         this.owner = owner;
         this.student = student;
         this.groupName = groupName;
+        this.booksRecommended = booksRecommended;
+    }
+
+    public List<BookEntity> getBooksRecommended() {
+        return booksRecommended;
+    }
+
+    public void setBooksRecommended(List<BookEntity> booksRecommended) {
+        this.booksRecommended = booksRecommended;
     }
 
     public String getGroupName() {
