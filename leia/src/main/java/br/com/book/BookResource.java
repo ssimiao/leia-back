@@ -68,7 +68,8 @@ public class BookResource {
                 .setName(volumeInfo.getTitle())
                 .setPages(volumeInfo.getPageCount())
                 .setCategory(volumeInfo.getCategories().stream().findFirst().orElse(null))
-                .setNumberOfRecommendation(1);
+                .setNumberOfRecommendation(1)
+                .setGroupOnly(false);
 
         bookRepository.persist(bookEntity);
         return bookEntity;

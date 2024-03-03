@@ -2,6 +2,8 @@ package br.com.book;
 
 import br.com.shared.exception.ReadException;
 import br.com.shared.exception.ResourceNotFoundException;
+import br.com.teacher.GroupStudentEntity;
+import br.com.teacher.GroupStudentRepository;
 import br.com.user.UserEntity;
 import br.com.user.UserRepository;
 import jakarta.inject.Inject;
@@ -28,6 +30,9 @@ public class BookReadResource {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private GroupStudentRepository groupStudentRepository;
+
     @POST
     @Transactional
     public Response addBookToRead(@RestPath Long userId, BookRequest bookRequest) {
@@ -47,7 +52,8 @@ public class BookReadResource {
         if (book.getChallenge().isEmpty())
             throw new ReadException("Sem desafios adicionados ao livro.");
 
-
+        if (book.getGroupOnly() && !filterGroupUserHasBookRecommended(userId, bookRequest))
+            throw new ReadException("Você não pode adicionar esse livro");
 
         BookReadEntity bookReadEntity = new BookReadEntity()
                 .setBook(book)
@@ -61,6 +67,14 @@ public class BookReadResource {
         return Response
                 .ok(Map.of("id", bookReadEntity.getId()))
                 .build();
+    }
+
+    private boolean filterGroupUserHasBookRecommended(Long userId, BookRequest bookRequest) {
+        return groupStudentRepository.streamAll()
+                .anyMatch(group -> group.getStudent().stream().anyMatch(student -> student.getId().equals(userId) &&
+                        group.getBooksRecommended().stream()
+                                .anyMatch(bookRecommended -> bookRecommended.getIsbn13().equalsIgnoreCase(bookRequest.getIsbn()) || bookRecommended.getIsbn().equalsIgnoreCase(bookRequest.getIsbn()))
+                ));
     }
 
     @PATCH

@@ -12,6 +12,17 @@ public class GroupStudentRequest {
     @JsonProperty("characters_id")
     private List<Long> characters;
 
+    @JsonProperty("isbn")
+    private String isbn;
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
     public List<Long> getCharacters() {
         return characters;
     }
