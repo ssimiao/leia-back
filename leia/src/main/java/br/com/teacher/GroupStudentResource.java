@@ -92,10 +92,11 @@ public class GroupStudentResource {
             }
 
             groupStudentEntity.getBooksRecommended().add(findableBook);
+            groupStudentRepository.persist(groupStudentEntity);
+            return Response.ok(Map.of("id_book", findableBook.getId())).build();
         }
 
-        groupStudentRepository.persist(groupStudentEntity);
-        return Response.ok().build();
+        return Response.serverError().build();
     }
 
     private BookEntity insertNewBook(GroupStudentRequest request) {
