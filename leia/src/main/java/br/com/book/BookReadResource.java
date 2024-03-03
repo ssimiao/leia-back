@@ -52,7 +52,7 @@ public class BookReadResource {
         if (book.getChallenge().isEmpty())
             throw new ReadException("Sem desafios adicionados ao livro.");
 
-        if (book.getGroupOnly() && !filterGroupUserHasBookRecommended(userId, bookRequest))
+        if (book.getGroupOnly() != null && book.getGroupOnly() && !filterGroupUserHasBookRecommended(userId, bookRequest))
             throw new ReadException("Você não pode adicionar esse livro");
 
         BookReadEntity bookReadEntity = new BookReadEntity()
