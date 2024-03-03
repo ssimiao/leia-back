@@ -69,6 +69,7 @@ public class GroupStudentResource {
 
         groupStudentRepository.persist(groupStudentEntity);
         return Response.ok().build();
+
     }
 
     @PUT
