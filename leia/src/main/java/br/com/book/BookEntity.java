@@ -48,6 +48,26 @@ public class BookEntity {
     @Column
     private Boolean groupOnly;
 
+    private Integer numberOfReaders;
+
+    private Integer finishReaders;
+
+    public Integer getFinishReaders() {
+        return finishReaders == null ? 0 : finishReaders;
+    }
+
+    public void setFinishReaders(Integer finishReaders) {
+        this.finishReaders = finishReaders;
+    }
+
+    public Integer getNumberOfReaders() {
+        return numberOfReaders;
+    }
+
+    public void setNumberOfReaders(Integer numberOfReaders) {
+        this.numberOfReaders = numberOfReaders;
+    }
+
     public Boolean getGroupOnly() {
         return groupOnly;
     }
