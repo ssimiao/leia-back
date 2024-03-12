@@ -29,9 +29,7 @@ public class GroupStudentSearchResource {
         GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner = :owner or id = :id", params).firstResult();
         groupStudentEntity.getBooksRecommended().forEach(it -> {
             it.setNumberOfReaders(groupStudentEntity.getStudent().size());
-            Map<String, Object> paramsRead = new HashMap<>();
-            params.put("bookId", it.getId());
-            bookReadRepository.find("book.id =: bookId", paramsRead).stream().forEach(read -> {
+            bookReadRepository.find("book.id", it.getId()).stream().forEach(read -> {
                 if (read.getChallengeAnswered() && groupStudentEntity.getStudent().stream().anyMatch(student -> student.getUser().getId().equals(read.getUser().getId()))) {
                     read.getBook().setFinishReaders(read.getBook().getFinishReaders());
                 }
