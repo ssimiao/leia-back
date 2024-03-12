@@ -31,7 +31,7 @@ public class GroupStudentSearchResource {
             it.setNumberOfReaders(groupStudentEntity.getStudent().size());
             bookReadRepository.find("book.id", it.getId()).stream().forEach(read -> {
                 if (read.getChallengeAnswered() && groupStudentEntity.getStudent().stream().anyMatch(student -> student.getUser().getId().equals(read.getUser().getId()))) {
-                    read.getBook().setFinishReaders(read.getBook().getFinishReaders());
+                    read.getBook().setFinishReaders(read.getBook().getFinishReaders() + 1);
                 }
                 read.getBook().setNumberOfReaders(groupStudentEntity.getStudent().size());
             });
