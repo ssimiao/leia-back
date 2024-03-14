@@ -1,10 +1,13 @@
 package br.com.book;
 
+import br.com.book.note.NotesEntity;
 import br.com.user.UserEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -31,6 +34,19 @@ public class BookReadEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "note_id")
+    private List<NotesEntity> note;
+
+    public List<NotesEntity> getNote() {
+        return note;
+    }
+
+    public BookReadEntity setNote(List<NotesEntity> note) {
+        this.note = note;
+        return this;
+    }
 
     public UserEntity getUser() {
         return user;

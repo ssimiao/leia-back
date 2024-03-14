@@ -60,6 +60,7 @@ public class BookReadResource {
                 .setPagesRead(0)
                 .setChapter(1)
                 .setChallengeAnswered(false)
+                .setNote(List.of())
                 .setUser(userEntity);
 
         bookReadRepository.persist(bookReadEntity);

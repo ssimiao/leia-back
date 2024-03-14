@@ -36,6 +36,7 @@ public class GroupStudentSearchResource {
                 read.getBook().setNumberOfReaders(groupStudentEntity.getStudent().size());
             });
         });
+
         return Response.ok(groupStudentEntity).build();
     }
 }
