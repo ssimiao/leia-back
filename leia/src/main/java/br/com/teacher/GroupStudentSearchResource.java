@@ -20,7 +20,8 @@ public class GroupStudentSearchResource {
         Map<String, Object> params = new HashMap<>();
         params.put("id", groupId);
         params.put("owner", userId);
-        GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner = :owner or id = :id", params).firstResult();
+        GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner = :owner or id = :id", params)
+                .firstResult();
         return Response.ok(groupStudentEntity).build();
     }
 }

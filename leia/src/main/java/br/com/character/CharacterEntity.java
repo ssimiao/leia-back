@@ -63,7 +63,31 @@ public class CharacterEntity {
     @Column
     private Integer enableAttributePoints;
 
+    @Column
+    private Integer vitality;
+
+    @Column
+    private Integer potions;
+
     public CharacterEntity() {
+    }
+
+    public Integer getPotions() {
+        return potions == null ? 0 : potions;
+    }
+
+    public CharacterEntity setPotions(Integer potions) {
+        this.potions = potions;
+        return this;
+    }
+
+    public Integer getVitality() {
+        return vitality == null ? 0 : vitality;
+    }
+
+    public CharacterEntity setVitality(Integer vitality) {
+        this.vitality = vitality;
+        return this;
     }
 
     public Integer getEnableAttributePoints() {

@@ -77,7 +77,9 @@ public class UserResource {
                     .setCharismaAttribute(0)
                     .setCoins(0)
                     .setEnableAttributePoints(10)
-                    .setIntelligenceAttribute(0);
+                    .setIntelligenceAttribute(0)
+                    .setVitality(5)
+                    .setPotions(0);
             characterRepository.persist(characterEntity);
             return Response.status(200).build();
         }
