@@ -44,6 +44,7 @@ public class ChallengeSolutionResource {
         character.setCoins(round(character.getCoins() + bookPages * 0.1f))
                 .setXp(round(character.getXp() + bookPages * 0.2f))
                 .setEnableAttributePoints(round(character.getEnableAttributePoints() + bookPages * 0.1f));
+        character.setPotions(character.getPotions() + 1);
 
         if (character.getXpToLevelUp() < character.getXp()) {
             character.setLevel(character.getLevel() + 1);
