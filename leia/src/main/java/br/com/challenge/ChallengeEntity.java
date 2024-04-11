@@ -17,7 +17,7 @@ public class ChallengeEntity {
     @Column
     private String challengeType;
 
-    @Column
+    @Column(length = 3000)
     private String challenge;
     
     public Long getId() {
