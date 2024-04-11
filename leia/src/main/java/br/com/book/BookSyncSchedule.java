@@ -18,6 +18,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
@@ -40,7 +41,7 @@ public class BookSyncSchedule {
     @RestClient
     private GameSalesforce gameSalesforce;
 
-    @Scheduled(every = "40s")
+    @Scheduled(every = "60s", delay = 30, delayUnit = TimeUnit.SECONDS)
     @Transactional
     public void syncBooks() {
         Token token = tokenClient.generateToken();
@@ -78,10 +79,12 @@ public class BookSyncSchedule {
                         }
                     } catch (JsonProcessingException e) {
                         Log.warn("não processou/sincronizou o livro: " + it.getName());
+                        Log.warn(e.getMessage());
                     }
 
                     return bookEntity;
-                }).toList();
+                }).filter(it -> !it.getChallenge().isEmpty())
+                .toList();
 
         bookRepository.persist(bookList);
     }
