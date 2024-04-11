@@ -21,7 +21,7 @@ public class CharacterActionResource {
     public Response actionResolve(@RestPath Long userId) {
         CharacterEntity character = characterRepository.findByUserId(userId);
         if (character != null && character.getPotions() > 0)  {
-            character.setPotions(character.getPotions());
+            character.setPotions(character.getPotions() - 1);
             character.setVitality(character.getVitality() + 1);
             characterRepository.persist(character);
             return Response.ok(character).build();
