@@ -83,7 +83,7 @@ public class BookSyncSchedule {
                     }
 
                     return bookEntity;
-                }).filter(it -> !it.getChallenge().isEmpty())
+                }).filter(it -> it.getChallenge() != null && !it.getChallenge().isEmpty())
                 .toList();
 
         bookRepository.persist(bookList);
