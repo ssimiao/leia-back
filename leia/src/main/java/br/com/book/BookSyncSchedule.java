@@ -2,12 +2,13 @@ package br.com.book;
 
 import br.com.challenge.ChallengeEntity;
 import br.com.challenge.ChallengeRepository;
+import br.com.challenge.PuzzleRequest;
+import br.com.challenge.SearchWordRequest;
 import br.com.security.Token;
 import br.com.security.TokenClient;
 import br.com.shared.salesforce.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,8 +17,6 @@ import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -64,23 +63,39 @@ public class BookSyncSchedule {
                             .setPages(it.getPageNumber())
                             .setGroupOnly(false);
 
-                    try {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        var message = objectMapper.readTree(gameSalesforce.getGamesFromIsbn(it.getIsbn10(), "Bearer " + token.getAccessToken()).get("message"))
-                                .get(0);
-                        if (message != null) {
-                            GameWrapper gameWrapper = objectMapper.readValue(message.asText(), GameWrapper.class);
-                            ChallengeEntity challengeEntity = new ChallengeEntity();
-                            challengeEntity.setChallengeType("memory");
-                            String challengeParse = gameWrapper.getGames().stream().map(Game::getUrl).collect(Collectors.joining("|"));
-                            challengeEntity.setChallenge(challengeParse);
-                            challengeRepository.persist(challengeEntity);
-                            bookEntity.setChallenge(List.of(challengeEntity));
-                        }
-                    } catch (JsonProcessingException e) {
-                        Log.warn("não processou/sincronizou o livro: " + it.getName());
-                        Log.warn(e.getMessage());
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    var challengeBook = gameSalesforce.getGamesFromIsbn(it.getIsbn10(), "Bearer " + token.getAccessToken());
+                    if (challengeBook.getGame() != null) {
+                        List<ChallengeEntity> challenges = challengeBook.getGame().stream().map(challenge -> {
+                                    ChallengeEntity challengeEntity = new ChallengeEntity();
+                                    try {
+                                        if (challenge.getType().equalsIgnoreCase("Memory")) {
+                                            MemoryWrapper memoryWrapper = objectMapper.readValue(challenge.getPayload(), MemoryWrapper.class);
+                                            String challengeParse = memoryWrapper.getGames().stream().map(MemoryGame::getUrl).collect(Collectors.joining("|"));
+                                            challengeEntity.setChallengeType("memory");
+                                            challengeEntity.setChallenge(challengeParse);
+                                        } else if (challenge.getType().equalsIgnoreCase("WordSearch")) {
+                                            WordWrapper wordWrapper = objectMapper.readValue(challenge.getPayload(), WordWrapper.class);
+                                            List<String> listaDePalavras = wordWrapper.getGames().stream().map(WordGame::getWord).toList();
+
+                                            SearchWordRequest searchWordRequest = new SearchWordRequest();
+                                            searchWordRequest.setWords(listaDePalavras);
+                                            searchWordRequest.setHint("Sem dica");
+                                            String challengeParse = objectMapper.writeValueAsString(searchWordRequest);
+                                            challengeEntity.setChallengeType("search");
+                                            challengeEntity.setChallenge(challengeParse);
+                                        }
+                                    } catch (JsonProcessingException e) {
+                                        Log.warn("não processou/sincronizou o livro: " + it.getName());
+                                        Log.warn(e.getMessage());
+                                    }
+                                    return challengeEntity;
+                                }).filter(challengeEntity -> challengeEntity.getChallengeType() != null)
+                                .toList();
+                        challengeRepository.persist(challenges);
+                        bookEntity.setChallenge(challenges);
                     }
+
 
                     return bookEntity;
                 }).filter(it -> it.getChallenge() != null && !it.getChallenge().isEmpty())

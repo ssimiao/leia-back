@@ -11,5 +11,5 @@ import java.util.Map;
 public interface GameSalesforce {
 
     @GET
-    Map<String, String> getGamesFromIsbn(@QueryParam("isbn") String isbn, @HeaderParam("Authorization") String token);
+    ChallengeWrapper getGamesFromIsbn(@QueryParam("isbn") String isbn, @HeaderParam("Authorization") String token);
 }
