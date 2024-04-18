@@ -4,20 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
-import java.util.List;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @RegisterForReflection
-public class GameWrapper {
+public class MemoryGame {
 
-    @JsonProperty("pairPositions")
-    List<Game> games;
+    @JsonProperty("contentUrl")
+    private String url;
 
-    public List<Game> getGames() {
-        return games;
+    public String getUrl() {
+        return url;
     }
 
-    public void setGames(List<Game> games) {
-        this.games = games;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

@@ -99,6 +99,31 @@ public class GroupStudentResource {
         return Response.serverError().build();
     }
 
+    @DELETE
+    @Transactional
+    public Response removeGroupOrStudent(@RestPath Long userId, GroupStudentRequest request) {
+        boolean isRemovableGroupAction = request.getCharacters() == null || request.getCharacters().isEmpty();
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", request.getName());
+        params.put("owner", userId);
+        GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner = :owner or groupName = :name", params).firstResult();
+
+        if (groupStudentEntity == null)
+            throw new ResourceNotFoundException("Grupo não encontrado");
+
+        if (isRemovableGroupAction) {
+            groupStudentRepository.deleteById(groupStudentEntity.getId());
+        } else {
+            List<CharacterEntity> lista = groupStudentEntity.getStudent().stream()
+                    .filter(it -> !Objects.equals(it.getId(), request.getCharacters().get(0))).toList();
+
+            groupStudentEntity.setStudent(lista);
+            groupStudentRepository.persist(groupStudentEntity);
+        }
+
+        return Response.ok().build();
+    }
+
     private BookEntity insertNewBook(GroupStudentRequest request) {
         GoogleBookData googleBookData = client.buscaLivroPorISBN("isbn:".concat(request.getIsbn()));
         List<GoogleBookItem> items = googleBookData.items;
