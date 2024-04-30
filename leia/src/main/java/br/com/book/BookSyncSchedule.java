@@ -76,7 +76,7 @@ public class BookSyncSchedule {
                                             challengeEntity.setChallenge(challengeParse);
                                         } else if (challenge.getType().equalsIgnoreCase("WordSearch")) {
                                             WordWrapper wordWrapper = objectMapper.readValue(challenge.getPayload(), WordWrapper.class);
-                                            List<String> listaDePalavras = wordWrapper.getGames().stream().map(WordGame::getWord).toList();
+                                            List<String> listaDePalavras = wordWrapper.getGames().stream().map(word -> word.getWord().toUpperCase()).toList();
 
                                             SearchWordRequest searchWordRequest = new SearchWordRequest();
                                             searchWordRequest.setWords(listaDePalavras);
