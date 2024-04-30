@@ -12,4 +12,8 @@ public class CharacterRepository implements PanacheRepositoryBase<CharacterEntit
     public CharacterEntity findByUserId(Long id){
         return find("user.id", id).firstResult();
     }
+
+    public CharacterEntity findByUsername(String usernameId){
+        return find("user.username", usernameId).firstResult();
+    }
 }

@@ -4,6 +4,7 @@ import br.com.book.BookEntity;
 import br.com.book.BookRepository;
 import br.com.book.BookRequest;
 import br.com.character.CharacterEntity;
+import br.com.character.CharacterRepository;
 import br.com.shared.exception.ResourceNotFoundException;
 import br.com.shared.google.GoogleBookData;
 import br.com.shared.google.GoogleBookItem;
@@ -36,6 +37,9 @@ public class GroupStudentResource {
     @Inject
     private BookRepository bookRepository;
 
+    @Inject
+    private CharacterRepository characterRepository;
+
     @RestClient
     private GoogleBooksClient client;
 
@@ -57,9 +61,15 @@ public class GroupStudentResource {
         GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner = :owner or groupName = :name", params).firstResult();
         List<CharacterEntity> student = groupStudentEntity.getStudent();
         List<CharacterEntity> characters = request.getCharacters().stream().map(id -> {
-            CharacterEntity characterEntity = new CharacterEntity();
-            characterEntity.setId(id);
-            return characterEntity;
+            if (id instanceof Long idNovo) {
+                CharacterEntity characterEntity = new CharacterEntity();
+                characterEntity.setId(idNovo);
+                return characterEntity;
+            } else if (id instanceof String username) {
+                return characterRepository.findByUsername(username);
+            }
+
+            throw new RuntimeException("Você precisa passar id ou username, precisa ser um valor numerico ou string");
         }).toList();
         if (Objects.nonNull(student)) {
             student.addAll(characters);

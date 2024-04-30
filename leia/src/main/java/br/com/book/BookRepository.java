@@ -17,4 +17,9 @@ public class BookRepository implements PanacheRepositoryBase<BookEntity, Long> {
         return find("isbn = :isbn or isbn13 = :isbn", params).firstResult();
     }
 
+    public BookEntity findByQueryValue(String queryValue){
+        Map<String, Object> params = new HashMap<>();
+        params.put("q", queryValue);
+        return find("isbn = :q or isbn13 = :q or name = :q", params).firstResult();
+    }
 }
