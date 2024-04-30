@@ -10,7 +10,7 @@ public class GroupStudentRequest {
     private String name;
 
     @JsonProperty("characters_id")
-    private List<Long> characters;
+    private List<Object> characters;
 
     @JsonProperty("isbn")
     private String isbn;
@@ -23,11 +23,11 @@ public class GroupStudentRequest {
         this.isbn = isbn;
     }
 
-    public List<Long> getCharacters() {
+    public List<Object> getCharacters() {
         return characters;
     }
 
-    public void setCharacters(List<Long> characters) {
+    public void setCharacters(List<Object> characters) {
         this.characters = characters;
     }
 
