@@ -61,16 +61,16 @@ public class GroupStudentResource {
         GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner = :owner or groupName = :name", params).firstResult();
         List<CharacterEntity> student = groupStudentEntity.getStudent();
         List<CharacterEntity> characters = request.getCharacters().stream().map(id -> {
-            if (id instanceof Long idNovo) {
+            if (id instanceof Integer idNovo) {
                 CharacterEntity characterEntity = new CharacterEntity();
-                characterEntity.setId(idNovo);
+                characterEntity.setId(Long.valueOf(idNovo));
                 return characterEntity;
             } else if (id instanceof String username) {
                 return characterRepository.findByUsername(username);
             }
 
             throw new RuntimeException("Você precisa passar id ou username, precisa ser um valor numerico ou string");
-        }).toList();
+        }).filter(Objects::nonNull).toList();
         if (Objects.nonNull(student)) {
             student.addAll(characters);
         } else {
