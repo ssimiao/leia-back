@@ -69,6 +69,12 @@ public class CharacterEntity {
     @Column
     private Integer potions;
 
+    @Column
+    private Integer challengeWin;
+
+    @Column
+    private Integer challengeFail;
+
     public CharacterEntity() {
     }
 
@@ -234,5 +240,21 @@ public class CharacterEntity {
     public CharacterEntity setIntelligenceAttribute(Integer intelligenceAttribute) {
         this.intelligenceAttribute = intelligenceAttribute;
         return this;
+    }
+
+    public Integer getChallengeWin() {
+        return challengeWin == null ? 0 : challengeWin;
+    }
+
+    public void setChallengeWin(Integer challengeWin) {
+        this.challengeWin = challengeWin;
+    }
+
+    public Integer getChallengeFail() {
+        return challengeFail == null ? 0 : challengeFail;
+    }
+
+    public void setChallengeFail(Integer challengeFail) {
+        this.challengeFail = challengeFail;
     }
 }
