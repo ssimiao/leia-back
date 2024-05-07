@@ -28,7 +28,7 @@ public class ForgotPassResource {
     @PATCH
     @Transactional
     public Response forget(@QueryParam("email") String email) {
-        int code = new Random().nextInt(9999) + 1000;
+        int code = new Random().nextInt(9000) + 1000;
         UserEntity user = userRepository.findByEmail(email);
 
         if (user == null)
