@@ -40,6 +40,9 @@ public class UserEntity {
     @Column
     private Integer avatarId;
 
+    @Column
+    private String otp;
+
     public UserEntity(Long id) {
         this.id = id;
     }
@@ -127,5 +130,13 @@ public class UserEntity {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 }
