@@ -110,6 +110,7 @@ public class UserResource {
             if (user != null && user.getOtp() != null && user.getOtp().equalsIgnoreCase(otp))
                 user.setPassword(passDataRequest.getNewPass());
             userRepository.persist(user);
+            return Response.ok(user).build();
         }
 
         UserEntity userEntity = userRepository.findById(passDataRequest.getId());
