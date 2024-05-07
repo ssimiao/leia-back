@@ -104,7 +104,15 @@ public class UserResource {
 
     @PATCH
     @Transactional
-    public Response updatePassInfo(PassData passDataRequest) {
+    public Response updatePassInfo(PassData passDataRequest, @QueryParam("otp") String otp, @QueryParam("email") String email) {
+        if(otp != null && email != null) {
+            UserEntity user = userRepository.findByEmail(email);
+            if (user != null && user.getOtp() != null && user.getOtp().equalsIgnoreCase(otp))
+                user.setPassword(passDataRequest.getNewPass());
+            userRepository.persist(user);
+            return Response.ok(user).build();
+        }
+
         UserEntity userEntity = userRepository.findById(passDataRequest.getId());
 
         if (userEntity.getPassword().equals(passDataRequest.getOldPass())) {
