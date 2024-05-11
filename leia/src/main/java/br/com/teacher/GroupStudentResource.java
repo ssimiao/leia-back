@@ -105,7 +105,7 @@ public class GroupStudentResource {
 
             groupStudentEntity.getBooksRecommended().add(findableBook);
             groupStudentRepository.persist(groupStudentEntity);
-            return Response.ok(Map.of("id_book", findableBook.getId())).build();
+            return Response.ok(Map.of("id_book", findableBook.getId(), "user_type", userEntity.getUserType())).build();
         }
 
         return Response.serverError().build();
