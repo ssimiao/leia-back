@@ -41,6 +41,7 @@ public class BookResource {
 
             if (findableBook != null) {
                 findableBook.setNumberOfRecommendation(findableBook.getNumberOfRecommendation() + 1);
+                findableBook.setGroupOnly(false);
                 bookRepository.persist(findableBook);
             } else {
                 findableBook = insertNewBook(request);
