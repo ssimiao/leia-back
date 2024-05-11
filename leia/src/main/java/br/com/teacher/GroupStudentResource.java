@@ -98,6 +98,8 @@ public class GroupStudentResource {
                 findableBook.setNumberOfRecommendation(findableBook.getNumberOfRecommendation() + 1);
                 bookRepository.persist(findableBook);
             } else {
+                if (userEntity.getUserType().equalsIgnoreCase("responsavel"))
+                    return Response.serverError().build();
                 findableBook = insertNewBook(request);
             }
 
