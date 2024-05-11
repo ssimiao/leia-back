@@ -55,6 +55,10 @@ public class UserResource {
                 character.setClasseId("Professor");
                 character.setRaceId("owl");
                 character.setColor("brown");
+            } else if ("responsavel".equalsIgnoreCase(userCharacterData.getAccount().getUserType())) {
+                character.setClasseId("Responsavel");
+                character.setRaceId("owl");
+                character.setColor("brown");
             }
             else
                 character.setClasseId("Novato");
