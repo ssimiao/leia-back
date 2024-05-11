@@ -91,7 +91,7 @@ public class GroupStudentResource {
         GroupStudentEntity groupStudentEntity = groupStudentRepository.find("owner = :owner or groupName = :name", params).firstResult();
 
         UserEntity userEntity = userRepository.findById(userId);
-        if (userEntity.getUserType().equalsIgnoreCase("professor")) {
+        if (userEntity.getUserType().equalsIgnoreCase("professor") || userEntity.getUserType().equalsIgnoreCase("responsavel")) {
             BookEntity findableBook = bookRepository.findByIsbn(request.getIsbn());
 
             if (findableBook != null) {
