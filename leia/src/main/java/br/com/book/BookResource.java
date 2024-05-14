@@ -77,6 +77,8 @@ public class BookResource {
 
     @GET
     public Response getBook(@QueryParam("isbn") String isbn, @QueryParam("q") String query) {
+        if (isbn == null && query == null)
+            return Response.ok(bookRepository.listAll()).build();
         if (query == null)
             return Response.ok(bookRepository.findByIsbn(isbn)).build();
 
