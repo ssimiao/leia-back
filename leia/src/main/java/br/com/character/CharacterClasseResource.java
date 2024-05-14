@@ -34,7 +34,9 @@ public class CharacterClasseResource {
         var validationFinished = classeRepository.findAll()
                 .stream()
                 .filter(classe -> !"Professor".equalsIgnoreCase(classe.getName()) &&
-                        !"Novato".equalsIgnoreCase(classe.getName()))
+                        !"Novato".equalsIgnoreCase(classe.getName()) &&
+                        !"Responsavel".equalsIgnoreCase(classe.getName())
+                       )
                 .map(classe -> {
                     ClasseAttributeValidateEnum classeAttributes = ClasseAttributeValidateEnum.valueOf(classe.getName().toUpperCase());
                     EnableClasseData enableClasseResponse = new EnableClasseData(classeAttributes.getNameClasse());
