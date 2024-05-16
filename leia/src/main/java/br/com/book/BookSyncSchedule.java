@@ -6,6 +6,8 @@ import br.com.challenge.PuzzleRequest;
 import br.com.challenge.SearchWordRequest;
 import br.com.security.Token;
 import br.com.security.TokenClient;
+import br.com.shared.google.GoogleTranslate;
+import br.com.shared.google.GoogleTranslateRequest;
 import br.com.shared.salesforce.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,6 +42,9 @@ public class BookSyncSchedule {
     @RestClient
     private GameSalesforce gameSalesforce;
 
+    @RestClient
+    private GoogleTranslate googleTranslate;
+
     @Scheduled(every = "60s", delay = 30, delayUnit = TimeUnit.SECONDS)
     @Transactional
     public void syncBooks() {
@@ -54,13 +59,20 @@ public class BookSyncSchedule {
                         books.stream().noneMatch(bookDatabase -> bookDatabase.getIsbn13().equalsIgnoreCase(it.getIsbn13()) ||
                                 bookDatabase.getIsbn().equalsIgnoreCase(it.getIsbn10())))
                 .map(it -> {
+                    var category = it.getCategory();
+                    try {
+                        if(category != null && !category.isBlank())
+                            category = googleTranslate.translate(new GoogleTranslateRequest(category)).getData().getTranslations().get(0).getTranslateText();
+                    } catch (Exception e) {
+                        Log.info("Não foi possível traduzir o texto: ".concat(category));
+                    }
                     BookEntity bookEntity = new BookEntity()
-                            .setCategory("Não identificada")
                             .setIsbn(it.getIsbn10())
                             .setIsbn13(it.getIsbn13())
                             .setName(it.getName())
                             .setNumberOfRecommendation(1)
                             .setPages(it.getPageNumber())
+                            .setCategory(category != null ? category : "Não identificada")
                             .setGroupOnly(false);
 
                     ObjectMapper objectMapper = new ObjectMapper();
