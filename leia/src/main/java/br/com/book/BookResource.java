@@ -1,12 +1,10 @@
 package br.com.book;
 
-import br.com.shared.google.GoogleBookData;
-import br.com.shared.google.GoogleBookItem;
-import br.com.shared.google.GoogleBookVolume;
-import br.com.shared.google.GoogleBooksClient;
+import br.com.shared.google.*;
 import br.com.shared.exception.ResourceNotFoundException;
 import br.com.user.UserEntity;
 import br.com.user.UserRepository;
+import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
@@ -28,6 +26,9 @@ public class BookResource {
 
     @RestClient
     private GoogleBooksClient client;
+
+    @RestClient
+    private GoogleTranslate googleTranslate;
 
     @Inject
     private BookRepository bookRepository;
@@ -62,12 +63,21 @@ public class BookResource {
                 .orElseThrow(() -> new ResourceNotFoundException("Livro Não encontrado"));
         GoogleBookVolume volumeInfo = book.getVolumeInfo();
 
+        String category = volumeInfo.getCategories().stream().findFirst().orElse("Não identificada");
+
+        try {
+            if(!category.equalsIgnoreCase("Não identificada"))
+                category = googleTranslate.translate(new GoogleTranslateRequest(category)).getData().getTranslations().get(0).getTranslateText();
+        } catch (Exception e) {
+            Log.info("Não foi possível traduzir o texto: ".concat(category));
+        }
+
         BookEntity bookEntity = new BookEntity()
                 .setIsbn(volumeInfo.getIndustryIdentifiers().get(1).getIdentifier())
                 .setIsbn13(volumeInfo.getIndustryIdentifiers().get(0).getIdentifier())
                 .setName(volumeInfo.getTitle())
                 .setPages(volumeInfo.getPageCount())
-                .setCategory(volumeInfo.getCategories().stream().findFirst().orElse(null))
+                .setCategory(category)
                 .setNumberOfRecommendation(1)
                 .setGroupOnly(false);
 
