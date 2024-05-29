@@ -17,6 +17,9 @@ public class Product {
     @JsonProperty("ISBN_13__c")
     private String isbn13;
 
+    @JsonProperty("Category__c")
+    private String category;
+
     @JsonProperty("PageCount__c")
     private Integer pageNumber;
 
@@ -61,5 +64,13 @@ public class Product {
 
     public void setPageNumber(Integer pageNumber) {
         this.pageNumber = pageNumber;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
