@@ -24,13 +24,13 @@ public class CharacterSyncResource {
 
     @POST
     @Transactional
-    public Response actionResolve(@RestPath("userId") Long id, Map<Object, Object> request) throws JsonProcessingException {
+    public Response actionResolve(@RestPath Long userId, Map<Object, Object> request) throws JsonProcessingException {
         try {
             Log.info(new ObjectMapper().writeValueAsString(request));
             var inventory = new ObjectMapper().readTree((String) request.get("data"))
                     .get("character").get("inventory").iterator();
 
-            CharacterEntity character = characterRepository.findByUserId(id);
+            CharacterEntity character = characterRepository.findByUserId(userId);
             inventory.forEachRemaining(it -> {
                         if (it.get("id").asText().contains("pocao_vermelha")) {
                             int quantity = it.get("quantity").asInt();
